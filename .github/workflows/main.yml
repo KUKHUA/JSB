@@ -41,7 +41,7 @@ jobs:
         docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-windows-x64.exe"
     
     - name: Upload native images as artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: native-images
         path: |
