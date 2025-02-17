@@ -1,0 +1,50 @@
+name: Build Native Images
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up GraalVM
+      uses: graalvm/setup-graalvm@v1
+      with:
+        graalvm-version: '22.3.0' # Adjust as needed
+        java-version: '11'
+
+    - name: Install Native Image
+      run: gu install native-image
+
+    - name: Compile ActuallyJava.java with javac
+      run: javac ActuallyJava.java
+
+    - name: Build Native Image for Linux x64
+      run: |
+        native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-x64
+
+    - name: Build Native Image for Linux AArch64 using Docker
+      run: |
+        docker run --rm --platform linux/arm64/v8 -v $(pwd):/project -w /project ghcr.io/graalvm/graalvm-ce:22.3.0-native-image bash -c "javac ActuallyJava.java && native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-arm64"
+
+    - name: Build Native Image for Windows x64 using Docker
+      run: |
+        docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-windows-x64.exe"
+    
+    - name: Upload native images as artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: native-images
+        path: |
+          actuallyjava-linux-x64
+          actuallyjava-linux-arm64
+          actuallyjava-windows-x64.exe
