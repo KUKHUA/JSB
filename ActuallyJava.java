@@ -88,12 +88,12 @@ class ActuallyJava {
                     break;
                 default:
                     System.out.println(
-                        "Invalid command\nUsage: ajava [build|run|package]"
+                        "Invalid command\nUsage: jsb [build|run|package]"
                     );
             }
         } catch (Exception e) {
             System.out.println(
-                "Error: Invalid command\nUsage: ajava [build|run|package]" +
+                "Error: Invalid command\nUsage: jsb [build|run|package]" +
                 e.getMessage()
             );
         }
