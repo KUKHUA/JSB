@@ -53,6 +53,6 @@ jobs:
       with:
         name: native-images
         path: |
-          actuallyjava-linux-x64
-          actuallyjava-linux-arm64
-          actuallyjava-windows-x64.exe
+          jsb-linux-x64
+          jsb-linux-arm64
+          jsb-windows-x64.exe
