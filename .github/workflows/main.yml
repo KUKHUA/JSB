@@ -23,9 +23,6 @@ jobs:
         distribution: 'graalvm'  # Use the GraalVM distribution (community edition)
         version: '22.3.0'  # Specify the desired GraalVM version (adjust if needed)
 
-    - name: Install Native Image
-      run: gu install native-image
-
     - name: Compile ActuallyJava.java with javac
       run: javac ActuallyJava.java
 
