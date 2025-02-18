@@ -19,9 +19,9 @@ jobs:
     - name: Set up GraalVM
       uses: graalvm/setup-graalvm@v1
       with:
-        distribution: 'graalvm-ce'  # Correct GraalVM distribution (community edition)
-        version: '22.3.0'  # Specify the GraalVM version
-        java-version: '11'  # Java version (Java 11)
+        java-version: '21'  # Specify the desired Java version (Java 21)
+        distribution: 'graalvm'  # Use the GraalVM distribution (community edition)
+        version: '22.3.0'  # Specify the desired GraalVM version (adjust if needed)
 
     - name: Install Native Image
       run: gu install native-image
