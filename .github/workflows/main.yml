@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Native Image for Linux x64
       run: |
-        native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-x64
+        native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-x64 -H:+UnlockExperimentalVMOptions
 
     - name: Build Native Image for Linux AArch64 using Docker
       run: |
