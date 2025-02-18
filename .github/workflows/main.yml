@@ -28,15 +28,25 @@ jobs:
 
     - name: Build Native Image for Linux x64
       run: |
-        native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-x64 -H:+UnlockExperimentalVMOptions
+        native-image ActuallyJava.class
+        
+    - name: Rename binary
+      run: |
+        mv ActuallyJava jsb-linux-x64
 
     - name: Build Native Image for Linux AArch64 using Docker
       run: |
-        docker run --rm --platform linux/arm64/v8 -v $(pwd):/project -w /project ghcr.io/graalvm/graalvm-ce:22.3.0-native-image bash -c "javac ActuallyJava.java && native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-linux-arm64"
+        docker run --rm --platform linux/arm64/v8 -v $(pwd):/project -w /project ghcr.io/graalvm/graalvm-ce:22.3.0-native-image bash -c "javac ActuallyJava.java && native-image ActuallyJava.class"
+    - name: Rename binary
+      run: |
+        mv ActuallyJava jsb-linux-arm64
 
     - name: Build Native Image for Windows x64 using Docker
       run: |
-        docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image --no-fallback -cp ActuallyJava.class -H:Name=actuallyjava-windows-x64.exe"
+        docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image ActuallyJava.class"
+    - name: Rename binary
+      run: |
+        mv ActuallyJava.exe jsb-windows-x64.exe
     
     - name: Upload native images as artifacts
       uses: actions/upload-artifact@v4
