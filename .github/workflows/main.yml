@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Native Image for Linux x64
       run: |
-        native-image ActuallyJava.class
+        native-image ActuallyJava
         
     - name: Rename binary
       run: |
@@ -36,14 +36,14 @@ jobs:
 
     - name: Build Native Image for Linux AArch64 using Docker
       run: |
-        docker run --rm --platform linux/arm64/v8 -v $(pwd):/project -w /project ghcr.io/graalvm/graalvm-ce:22.3.0-native-image bash -c "javac ActuallyJava.java && native-image ActuallyJava.class"
+        docker run --rm --platform linux/arm64/v8 -v $(pwd):/project -w /project ghcr.io/graalvm/graalvm-ce:22.3.0-native-image bash -c "javac ActuallyJava.java && native-image ActuallyJava"
     - name: Rename binary
       run: |
         mv ActuallyJava jsb-linux-arm64
 
     - name: Build Native Image for Windows x64 using Docker
       run: |
-        docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image ActuallyJava.class"
+        docker run --rm --platform linux/amd64 -v $(pwd):/project -w /project mcr.microsoft.com/windows/servercore:ltsc2019 bash -c "javac ActuallyJava.java && native-image ActuallyJava"
     - name: Rename binary
       run: |
         mv ActuallyJava.exe jsb-windows-x64.exe
