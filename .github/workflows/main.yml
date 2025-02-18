@@ -14,13 +14,14 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up GraalVM
       uses: graalvm/setup-graalvm@v1
       with:
-        distribution: 'graalvm-ce-java11' # Specify the GraalVM distribution and version
-        version: '22.3.0' # Specify the desired GraalVM version
+        distribution: 'graalvm-ce-java11'  # GraalVM version with Java 11 support
+        java-version: '11'  # Java version (11 in this case)
+        version: '22.3.0'  # GraalVM version to install
 
     - name: Install Native Image
       run: gu install native-image
