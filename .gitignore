@@ -1,6 +1,5 @@
 *.class
 *.properties
-Main.java
 /classes/*
 /classes/*.class
 dist/*
