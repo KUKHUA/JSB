@@ -84,8 +84,8 @@ jsb init
 This will create a src/Main.java file and a build.properties configuration file.
 
 ### Running
-To run your application, execute: `jsb build`
-Note: This command must be run from the directory containing your build.properties file.
+To run your application, execute: `jsb run`
+Note: This command must be run from the directory containing your build.properties file. You can also use `jsb build` to only build classes.
 
 ### Packaging
 To package your application into a JAR:
