@@ -138,7 +138,12 @@ public class BuildManager {
                             File newFile = new File(
                                 depClassesPath,
                                 entry.getName()
-                            );
+                            ).getCanonicalFile();
+
+                            // Ensure the new file path is within the intended directory
+                            if (!newFile.toPath().startsWith(depClassesPath.toPath())) {
+                                throw new IOException("Bad zip entry: " + entry.getName());
+                            }
 
                             // Ensure parent directories exist
                             if (entry.isDirectory()) {
