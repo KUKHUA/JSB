@@ -25,7 +25,8 @@ jobs:
         
     - name: Build classes
       run:  |
-        javac -d ./classes ./src/**/*.java
+        ls
+        javac -d ./classes ./src/*.java
 
     - name: Package
       run: |
