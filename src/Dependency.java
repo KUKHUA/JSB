@@ -11,12 +11,12 @@ import java.util.List;
 public class Dependency {
 
     private Config config;
+    private String BASE_URL = "https://repo1.maven.org/maven2/";
 
     Dependency(Config config) {
         this.config = config;
+        BASE_URL = config.get("repo.url");
     }
-
-    private final String BASE_URL = config.get("repo.url");
 
     public File get(String mavenString) throws IOException, URISyntaxException {
         if (mavenString == null || mavenString.trim().isEmpty()) {
