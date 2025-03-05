@@ -8,25 +8,7 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
 - **Easy to Use**: Build classes with `jsb build`, run your application with `jsb run`, and package your project with `jsb jar`.
 
 ## Installation
-
-### Linux
-
-1. Download the latest release from the [JSB Releases](#) page.
-2. Extract the downloaded TAR file to a directory of your choice.
-3. Add the JSB directory to your PATH by editing your shell profile:
-    - Open your terminal.
-    - Edit your profile file (e.g., `~/.bashrc`, `~/.zshrc`):
-      ```sh
-      nano ~/.bashrc
-      ```
-    - Add the following line to the end of the file:
-      ```sh
-      export PATH=$PATH:/path/to/jsb
-      ```
-    - Save the file and reload your profile:
-      ```sh
-      source ~/.bashrc
-      ```
+Figure it out yourself.
 
 ## Usage
 
@@ -78,11 +60,6 @@ To package your project into a JAR file, use the `jsb jar` command:
 ```sh
 jsb jar
 ```
-
-
-## Releases
-
-JSB has builds available for both Windows and Linux. You can find the latest releases on the [JSB Releases](#) page.
 
 ## Contributing
 
