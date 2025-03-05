@@ -1,7 +1,5 @@
 *.class
-./src/*
 *.properties
-/src/*
 Main.java
 /classes/*
 /classes/*.class
