@@ -5,20 +5,18 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 public class Dependency {
 
-    Config config;
+    private Config config;
 
     Dependency(Config config) {
         this.config = config;
     }
 
-    private static final String BASE_URL = "https://repo1.maven.org/maven2/";
+    private final String BASE_URL = config.get("repo.url");
 
     public File get(String mavenString) throws IOException, URISyntaxException {
         if (mavenString == null || mavenString.trim().isEmpty()) {

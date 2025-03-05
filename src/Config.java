@@ -7,6 +7,7 @@ import java.util.Properties;
 public class Config {
 
     private Properties properties;
+    private boolean isReady = false;
 
     public Config() {
         // If the file build.properties exists, load it
@@ -15,11 +16,11 @@ public class Config {
         this.properties = new Properties();
         if (buildPropFile.exists()) {
             loadProperties();
-        } else {
-            throw new RuntimeException(
-                "build.properties file not found. Please run 'init' command to create a project."
-            );
         }
+    }
+
+    public boolean ready() {
+        return isReady;
     }
 
     public void initConfig() {
@@ -52,6 +53,7 @@ public class Config {
             FileInputStream in = new FileInputStream("build.properties");
             properties.load(in);
             in.close();
+            isReady = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,6 +72,7 @@ public class Config {
         properties.setProperty("package.name", "MainPackage");
 
         properties.setProperty("dep.path", "./lib");
+        properties.setProperty("repo.url", "https://repo1.maven.org/maven2/");
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             properties.setProperty("build.sep", ";");
             properties.setProperty("build.shell", "cmd");
@@ -79,6 +82,7 @@ public class Config {
             properties.setProperty("build.shell", "sh");
             properties.setProperty("build.shell.parm", "-c");
         }
+
         saveProperties();
     }
 
