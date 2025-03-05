@@ -63,6 +63,7 @@ public class Config {
         properties.setProperty("build.cmd", "javac");
         properties.setProperty("build.path", "./src");
         properties.setProperty("build.builds", "./classes");
+        properties.setProperty("build.verbose", "true");
 
         properties.setProperty("run.cmd", "java");
         properties.setProperty("run.class", "Main");
