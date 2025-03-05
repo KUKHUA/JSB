@@ -58,7 +58,7 @@ public class BuildManager {
         if(config.get("build.verbose").equals("true")) {
             buildCommand.add("-verbose");
         }
-        
+
         buildCommand.add(config.get("build.path") + "/*.java");
         shellCommand.add(String.join(" ", buildCommand));
         System.out.println("Running the command ..." + shellCommand);
