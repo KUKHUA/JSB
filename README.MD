@@ -1,11 +1,27 @@
 # Java Simple Build Tool (JSB)
 
-Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. It was created as an alternative to Maven and Gradle, which can be overly complex for simple projects. JSB relies on `java`, `jar`, and `javac`, which are typically bundled together.
+Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. It was created as an alternative to Maven and Gradle, which can be overly complex for simple projects. JSB relies on `java`, `jar`, and `javac` existing on the system.
 
-## Features
+## Table of Contents
+- [Java Simple Build Tool (JSB)](#java-simple-build-tool-jsb)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Pre-Built](#pre-built)
+    - [Building](#building)
+  - [Usage](#usage)
+    - [Initialize](#initialize)
+    - [Running](#running)
+    - [Packaging](#packaging)
+    - [Dependencies](#dependencies)
+    - [Configuration](#configuration)
+      - [Builds](#builds)
+      - [Dependencies](#dependencies-1)
+      - [Packaging](#packaging-1)
+      - [Repository](#repository)
+      - [Runtime](#runtime)
+  - [Contributing](#contributing)
+  - [License](#license)
 
-- **Simple Dependency Management**: Add dependencies with `jsb add` and remove them with `jsb remove`.
-- **Easy to Use**: Build classes with `jsb build`, run your application with `jsb run`, and package your project with `jsb jar`.
 
 ## Installation
 ### Pre-Built
@@ -43,7 +59,6 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
             * For **Zsh** (MacOS): `source ~/.zshrc` 
 4. Your done.
 
-
 ### Building
 ```bash
     git clone https://github.com/KUKHUA/JSB.git
@@ -55,6 +70,65 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
     cd ..
     echo "JSB built to jsb.jar"
 ````
+
+## Usage
+### Initialize
+To initialize a new project:
+
+Create a new folder for your JSB project:
+```bash
+mkdir project
+cd project
+jsb init
+```
+This will create a src/Main.java file and a build.properties configuration file.
+
+### Running
+To run your application, execute: `jsb build`
+Note: This command must be run from the directory containing your build.properties file.
+
+### Packaging
+To package your application into a JAR:
+```bash
+jsb package
+```
+Note: During packaging, all JAR files in the lib directory will be extracted to classes to ensure proper classpath integration.
+
+### Dependencies
+To manage dependencies, use the Gradle-style coordinate notation:
+```bash
+jsb add org.json:json:20250107    # Add a dependency
+jsb remove org.json:json:20250107 # Remove a dependency
+```
+Note: Dependencies are downloaded automatically during the build process, not when adding them to the project.
+
+### Configuration
+
+#### Builds
+- **build.builds**: Directory where built `.class` files are stored (`./classes`).
+- **build.cmd**: Command to compile `.java` to `.class` (default: `javac`). Change if Java is not in the system path.
+- **build.path**: Directory containing source code (`./src`).
+- **build.sep**: Path separator (`;` for Windows, `:` for other systems).
+- **build.shell**: Shell used for executing commands (`cmd` for Windows, `sh` for other systems).
+- **build.shell.parm**: Parameter for shell execution (`/c` for Windows, `-c` for other systems).
+- **build.verbose**: Whether verbose mode is enabled for building (`true/false`).
+
+#### Dependencies
+- **dep.path**: Directory to store library `.jar` files (`./lib`).
+
+#### Packaging
+- **package.cmd**: Command used to package compiled classes (`jar`).
+- **package.name**: Name of the output package file (without file extension, e.g., `MainPackage`).
+- **package.path**: Directory to store the packaged program (`./dist`).
+
+#### Repository
+- **repo.url**: URL to download dependencies and libraries (`https://repo1.maven.org/maven2/`).
+
+#### Runtime
+- **run.class**: Main class to execute (`Main`).
+- **run.cmd**: Command to run the program (useful if Java is not in the system path, default: `java`).
+
+
 
 ## Contributing
 
