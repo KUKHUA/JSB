@@ -20,6 +20,7 @@ jobs:
       uses: actions/setup-java@v4.7.0
       with:
         java-version: '23'  # Adjust Java version if needed
+        distribution: 'jdk'
         
     - name: Build classes
       run:  |
