@@ -6,9 +6,10 @@ class Main {
 
     public static void main(String[] args) {
         Config config = new Config();
+        final String usage = " Usage: jsb [init|build|run|package|add|remove] ";
     
         if (args.length == 0) {
-            System.out.println("Error: No command provided\nUsage: jsb [init|build|run|package]");
+            System.out.println("Error: No command provided\n" + usage);
             return;
         }
     
@@ -42,7 +43,7 @@ class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             return;
         }
     
@@ -99,14 +100,11 @@ class Main {
                     }
                     break;
                 default:
-                    System.out.println(
-                        "Invalid command\nUsage: jsb [build|run|package]"
-                    );
+                    System.out.println("Error: Invalid command\n" + usage);
             }
         } catch (Exception e) {
             System.out.println(
-                "Error: Invalid command\nUsage: jsb [build|run|package]" +
-                e.getMessage()
+                "Error: Invalid command\n" + usage + e.getMessage()
             );
         }
     }
