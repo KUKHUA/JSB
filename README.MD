@@ -39,7 +39,7 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
 
         5.  Under **System Variables**, find the **Path** variable and select Edit.
 
-        6. Click **New** and add the path where `jsb.jar` is stored (e.g., C:\jsb\).
+        6. Add a path for "jsb" to "java -jar C:\jsb\jsb.jar".
 
         7.  Click **OK** on all winbdows and restart your terminal or PC.
     * On Linux:
