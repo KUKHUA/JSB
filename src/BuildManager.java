@@ -48,7 +48,7 @@ public class BuildManager {
         buildCommand.add("-cp");
         buildCommand.add(
             String.format(
-                "\"%s/*.java%s%s/*\"",
+                "\"%s/%s%s/*\"",
                 config.get("build.path"),
                 config.get("build.sep"),
                 config.get("dep.path")
