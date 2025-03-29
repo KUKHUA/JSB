@@ -68,11 +68,11 @@ class Main {
                     System.out.println("Running...");
 
                     // Check if there are arguments
-                    if (args != null && args.length > 1) {
-                        // Remove the first argument
+                    if (args != null && args.length > 2) {
+                        // Remove the first two arguments
                         String[] runArgs = Arrays.copyOfRange(
                             args,
-                            1,
+                            2,  // Start from index 2
                             args.length
                         );
                         BuildMan.run(runArgs);
