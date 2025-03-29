@@ -55,7 +55,7 @@ public class BuildManager {
             )
         );
 
-        if(config.get("build.verbose").equals("true")) {
+        if (config.get("build.verbose").equals("true")) {
             buildCommand.add("-verbose");
         }
 
@@ -65,7 +65,7 @@ public class BuildManager {
         runCommand(shellCommand);
     }
 
-    public void run() {
+    public void run(String[] runArgs) {
         build();
         System.out.println("Running project ...");
         ArrayList<String> shellCommand = new ArrayList<>();
@@ -84,6 +84,9 @@ public class BuildManager {
             )
         );
         runCommand.add(config.get("run.class"));
+        if (runArgs != null && runArgs.length > 1) {
+            runCommand.add(String.join(" ", runArgs));
+        }
 
         shellCommand.add(String.join(" ", runCommand));
 
@@ -141,8 +144,14 @@ public class BuildManager {
                             ).getCanonicalFile();
 
                             // Ensure the new file path is within the intended directory
-                            if (!newFile.toPath().startsWith(depClassesPath.toPath())) {
-                                throw new IOException("Bad zip entry: " + entry.getName());
+                            if (
+                                !newFile
+                                    .toPath()
+                                    .startsWith(depClassesPath.toPath())
+                            ) {
+                                throw new IOException(
+                                    "Bad zip entry: " + entry.getName()
+                                );
                             }
 
                             // Ensure parent directories exist
