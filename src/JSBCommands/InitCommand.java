@@ -47,7 +47,7 @@ public class InitCommand extends Handler {
     }
 
     /**
-     * Creates a file if it doesn't alrealdy exist.
+     * Creates a file if it doesn't already exist.
      * @param name  - name of the file
      * @param content - what to write to the file
      */
