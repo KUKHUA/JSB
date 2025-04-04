@@ -1,3 +1,5 @@
+package JSBCommands.Util;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,9 +15,9 @@ public class Dependency {
     private Config config;
     private String BASE_URL = "https://repo1.maven.org/maven2/";
 
-    Dependency(Config config) {
+    public Dependency(Config config) {
         this.config = config;
-        BASE_URL = config.get("repo.url");
+        if (config.ready()) BASE_URL = config.get("repo.url");
     }
 
     public File get(String mavenString) throws IOException, URISyntaxException {
@@ -58,23 +60,19 @@ public class Dependency {
         return outputFile;
     }
 
-    public void loadDeps(String[] listOfDeps, String localPathString) {
+    public void loadDeps(String[] listOfDeps, String localPathString)
+        throws Exception {
         for (String dep : listOfDeps) {
             if (hasFile(dep)) continue;
             System.out.println("Loading dependency: " + dep);
-            try {
-                File depFile = get(dep);
-                // Move the file to the local path
-                File localPath = new File(localPathString);
-                if (!localPath.exists()) {
-                    localPath.mkdirs();
-                }
-                File newFile = new File(localPath, depFile.getName());
-                depFile.renameTo(newFile);
-                System.out.println("Finished loading dependency.");
-            } catch (Exception e) {
-                e.printStackTrace();
+            File depFile = this.get(dep);
+            File localPath = new File(localPathString);
+            if (!localPath.exists()) {
+                localPath.mkdirs();
             }
+            File newFile = new File(localPath, depFile.getName());
+            depFile.renameTo(newFile);
+            System.out.println("Finished loading dependency: " + dep);
         }
     }
 

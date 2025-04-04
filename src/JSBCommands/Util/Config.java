@@ -1,3 +1,5 @@
+package JSBCommands.Util;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,34 +11,19 @@ public class Config {
     private Properties properties;
     private boolean isReady = false;
 
-    public Config() {
-        // If the file build.properties exists, load it
-        // Else, create it
-        File buildPropFile = new File("build.properties");
-        this.properties = new Properties();
-        if (buildPropFile.exists()) {
-            loadProperties();
-        }
-    }
+    public Config() {}
 
     public boolean ready() {
         return isReady;
     }
 
     public void initConfig() {
-        File srcDir = new File("src");
-        if (!srcDir.exists()) {
-            srcDir.mkdir();
+        File buildPropFile = new File("build.properties");
+        this.properties = new Properties();
+        if (buildPropFile.exists()) {
+            loadProperties();
         }
 
-        File mainJavaFile = new File("src/Main.java");
-        if (!mainJavaFile.exists()) {
-            try {
-                mainJavaFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         setDefaultProperties();
     }
 
@@ -61,12 +48,12 @@ public class Config {
 
     private void setDefaultProperties() {
         properties.setProperty("build.cmd", "javac");
-        properties.setProperty("build.path", "./src");
+        properties.setProperty("code.path", "./src");
         properties.setProperty("build.builds", "./classes");
         properties.setProperty("build.verbose", "true");
 
-        properties.setProperty("run.cmd", "java");
-        properties.setProperty("run.class", "Main");
+        properties.setProperty("java.path", "java");
+        properties.setProperty("java.class", "Main");
 
         properties.setProperty("package.cmd", "jar");
         properties.setProperty("package.path", "./dist");
@@ -74,15 +61,13 @@ public class Config {
 
         properties.setProperty("dep.path", "./lib");
         properties.setProperty("repo.url", "https://repo1.maven.org/maven2/");
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            properties.setProperty("build.sep", ";");
-            properties.setProperty("build.shell", "cmd");
-            properties.setProperty("build.shell.parm", "/c");
-        } else {
-            properties.setProperty("build.sep", ":");
-            properties.setProperty("build.shell", "sh");
-            properties.setProperty("build.shell.parm", "-c");
-        }
+
+        String os = System.getProperty("os.name").toLowerCase();
+        boolean isWindows = os.contains("win");
+
+        properties.setProperty("system.sep", isWindows ? ";" : ":");
+        properties.setProperty("system.shell", isWindows ? "cmd" : "sh");
+        properties.setProperty("system.shell.parm", isWindows ? "/c" : "-c");
 
         saveProperties();
     }

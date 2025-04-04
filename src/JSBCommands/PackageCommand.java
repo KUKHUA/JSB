@@ -1,0 +1,123 @@
+package JSBCommands;
+
+import Command.Command;
+import Command.Handler;
+import JSBCommands.Util.Config;
+import JSBCommands.Util.Dependency;
+import JSBCommands.Util.Runner;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+public class PackageCommand extends Handler {
+
+    Config config;
+    Dependency dependency;
+
+    public PackageCommand(Config config, Dependency dependency)
+        throws Exception {
+        this.config = config;
+        this.dependency = dependency;
+    }
+
+    @Override
+    public void handleCommand(Command command) throws Exception {
+        if (!this.config.ready()) this.config.initConfig();
+
+        System.out.println("Packaging project ...");
+        ArrayList<String> shellCommand = new ArrayList<>();
+        shellCommand.add(config.get("system.shell"));
+        shellCommand.add(config.get("system.shell.parm"));
+        ArrayList<String> jarCommand = new ArrayList<>();
+        jarCommand.add(config.get("package.cmd"));
+        jarCommand.add("--create");
+        jarCommand.add(
+            "--file=" +
+            config.get("package.path") +
+            "/" +
+            config.get("package.name") +
+            ".jar"
+        );
+        jarCommand.add("-e");
+        jarCommand.add(config.get("java.class"));
+        jarCommand.add("-C");
+        jarCommand.add(config.get("build.builds") + "/");
+        jarCommand.add(".");
+        jarCommand.add("-C");
+        jarCommand.add(config.get("dep.path") + "/classes/");
+        jarCommand.add(".");
+
+        shellCommand.add(String.join(" ", jarCommand));
+        //unzip every jar file in the dep.path to dep.path/classes and ignore META-INF folder, also write into eixsting folders
+        File depClassesPath = new File(config.get("dep.path") + "/classes/");
+        if (!depClassesPath.exists()) {
+            depClassesPath.mkdirs(); // Ensure the target classes directory exists
+        }
+
+        for (File file : dependency.listAll()) {
+            if (file.getName().endsWith(".jar")) { // Check if the file is a .jar
+                try (
+                    ZipInputStream zis = new ZipInputStream(
+                        new FileInputStream(file)
+                    )
+                ) {
+                    ZipEntry entry;
+                    while ((entry = zis.getNextEntry()) != null) {
+                        if (!entry.getName().startsWith("META-INF/")) { // Ignore META-INF
+                            // Create the File object, considering whether it's a directory or not
+                            File newFile = new File(
+                                depClassesPath,
+                                entry.getName()
+                            ).getCanonicalFile();
+
+                            // Handle directory entries
+                            if (entry.isDirectory()) {
+                                // Create directories for entries that are directories
+                                if (!newFile.exists()) {
+                                    newFile.mkdirs();
+                                }
+                            } else {
+                                // Create parent directories for files if they don't exist
+                                newFile.getParentFile().mkdirs();
+
+                                // Write the file content
+                                try (
+                                    BufferedOutputStream bos =
+                                        new BufferedOutputStream(
+                                            new FileOutputStream(newFile)
+                                        )
+                                ) {
+                                    byte[] buffer = new byte[1024];
+                                    int length;
+                                    while ((length = zis.read(buffer)) != -1) {
+                                        bos.write(buffer, 0, length);
+                                    }
+                                }
+                            }
+                        }
+                        zis.closeEntry();
+                    }
+                }
+            }
+        }
+
+        System.out.println("Running the command: " + shellCommand);
+        boolean exitedGood = Runner.runCommand(shellCommand);
+        if (exitedGood) System.out.println("Packing exited successfully!");
+        else System.out.println("Packing probably failed : (");
+    }
+
+    @Override
+    public String getHelpInfo() {
+        return (
+            "Packages Java source files into a runnable JAR file\n" +
+            "  - Builds all source files" +
+            "  - Creates a JAR file in the ./dist directory\n" +
+            "  - Usage: build\n"
+        );
+    }
+}
