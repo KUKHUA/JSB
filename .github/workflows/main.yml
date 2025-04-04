@@ -24,9 +24,9 @@ jobs:
         distribution: 'temurin'
         
     - name: Build classes
-      run:  |
-        ls
-        javac -d ./classes ./src/*.java
+      run: |
+        ls ./src
+        javac -d ./classes ./src/**/*.java
 
     - name: Package
       run: |
