@@ -36,7 +36,7 @@ public class InitCommand extends Handler {
     }
 
     /**
-     * Creates a folder if it doesn't alrealdy exist.
+     * Creates a folder if it doesn't already exist.
      * @param name  - name of the folder
      */
     private void folderCreate(String name) throws IOException {
