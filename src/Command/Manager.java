@@ -84,7 +84,7 @@ public class Manager {
             }
         } catch (Exception e) {
             this.displayHelp();
-            System.out.println("---\nFailed to excute command:");
+            System.out.println("---\nFailed to execute command:");
             e.printStackTrace();
             System.out.println("---");
         }
