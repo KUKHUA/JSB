@@ -32,7 +32,7 @@ public class InitCommand extends Handler {
         this.folderCreate("src");
 
         this.fileCreate("src/Main.java", exampleMainClass);
-        System.out.println("Initlized project.");
+        System.out.println("Initialized project.");
     }
 
     /**
