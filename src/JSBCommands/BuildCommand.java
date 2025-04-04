@@ -59,6 +59,19 @@ public class BuildCommand extends Handler {
         }
 
         System.out.println("Building project ...");
+        Files.walk(Paths.get(config.get("build.builds")))
+            .filter(p -> p.toString().endsWith(".class"))
+            .forEach(
+                p -> {
+                    try {
+                        Files.delete(p);
+                    } catch (IOException e) {
+                        System.err.println("Failed to delete " + p);
+                    }
+                }
+            );
+
+
         List<String> javaFiles = Files.walk(Paths.get(config.get("code.path")))
             .filter(p -> p.toString().endsWith(".java"))
             .map(Path::toString)

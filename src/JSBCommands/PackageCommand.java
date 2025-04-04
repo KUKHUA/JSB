@@ -50,6 +50,7 @@ public class PackageCommand extends Handler {
     @Override
     public void handleCommand(Command command) throws Exception {
         if (!this.config.ready()) this.config.initConfig();
+        new BuildCommand(config, dependency).handleCommand(new Command(""));
 
         System.out.println("Packaging project ...");
         ArrayList<String> shellCommand = new ArrayList<>();
