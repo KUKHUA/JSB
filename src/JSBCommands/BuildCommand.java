@@ -5,8 +5,11 @@ import Command.Handler;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 import JSBCommands.Util.Runner;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,19 +60,26 @@ public class BuildCommand extends Handler {
             String[] deps = config.get("deps").split(",");
             dependency.loadDeps(deps, config.get("dep.path"));
         }
-
         System.out.println("Building project ...");
-        Files.walk(Paths.get(config.get("build.builds")))
-            .filter(p -> p.toString().endsWith(".class"))
-            .forEach(
-                p -> {
-                    try {
-                        Files.delete(p);
-                    } catch (IOException e) {
-                        System.err.println("Failed to delete " + p);
-                    }
-                }
-            );
+        
+        File buildDir = new File(config.get("build.builds"));
+        if (!buildDir.exists()) {
+            buildDir.mkdirs();
+        } else {
+            try {
+                Files.walk(Paths.get(config.get("build.builds")))
+                    .filter(p -> p.toString().endsWith(".class"))
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+                        } catch (IOException e) {
+                            throw new UncheckedIOException("Failed to delete class file: " + p, e);
+                        }
+                    });
+            } catch (IOException e) {
+                throw new IOException("Failed to clean build directory", e);
+            }
+        }
 
 
         List<String> javaFiles = Files.walk(Paths.get(config.get("code.path")))
