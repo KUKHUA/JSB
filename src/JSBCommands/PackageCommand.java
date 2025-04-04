@@ -151,7 +151,7 @@ public class PackageCommand extends Handler {
             "Packages Java source files into a runnable JAR file\n" +
             "  - Builds all source files" +
             "  - Creates a JAR file in the ./dist directory\n" +
-            "  - Usage: build\n"
+            "  - Usage: package\n"
         );
     }
 }
