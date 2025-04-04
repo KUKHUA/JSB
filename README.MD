@@ -14,11 +14,11 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
     - [Packaging](#packaging)
     - [Dependencies](#dependencies)
     - [Configuration](#configuration)
-      - [Builds](#builds)
-      - [Dependencies](#dependencies-1)
-      - [Packaging](#packaging-1)
-      - [Repository](#repository)
-      - [Runtime](#runtime)
+      - [Build Settings](#build-settings)
+      - [Java Runtime Settings](#java-runtime-settings)
+      - [Package Settings](#package-settings)
+      - [Dependency Settings](#dependency-settings)
+      - [System Settings](#system-settings)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -103,32 +103,32 @@ jsb remove org.json:json:20250107 # Remove a dependency
 Note: Dependencies are downloaded automatically during the build process, not when adding them to the project.
 
 ### Configuration
+All configuration is stored in `build.properties`. Here are the available settings:
 
-#### Builds
-- **build.builds**: Directory where built `.class` files are stored (`./classes`).
-- **build.cmd**: Command to compile `.java` to `.class` (default: `javac`). Change if Java is not in the system path.
-- **build.path**: Directory containing source code (`./src`).
-- **build.sep**: Path separator (`;` for Windows, `:` for other systems).
-- **build.shell**: Shell used for executing commands (`cmd` for Windows, `sh` for other systems).
-- **build.shell.parm**: Parameter for shell execution (`/c` for Windows, `-c` for other systems).
-- **build.verbose**: Whether verbose mode is enabled for building (`true/false`).
+#### Build Settings
+- **build.cmd**: Java compiler command (default: `javac`)
+- **build.builds**: Directory for compiled `.class` files (default: `./classes`)
+- **build.verbose**: Enable verbose compilation output (default: `true`)
+- **code.path**: Source code directory (default: `./src`)
 
-#### Dependencies
-- **dep.path**: Directory to store library `.jar` files (`./lib`).
+#### Java Runtime Settings  
+- **java.path**: Java runtime command (default: `java`)
+- **java.class**: Main class to execute (default: `Main`)
 
-#### Packaging
-- **package.cmd**: Command used to package compiled classes (`jar`).
-- **package.name**: Name of the output package file (without file extension, e.g., `MainPackage`).
-- **package.path**: Directory to store the packaged program (`./dist`).
+#### Package Settings
+- **package.cmd**: JAR creation command (default: `jar`)
+- **package.path**: Output directory for packaged JARs (default: `./dist`) 
+- **package.name**: Name of output JAR without extension (default: `MainPackage`)
 
-#### Repository
-- **repo.url**: URL to download dependencies and libraries (`https://repo1.maven.org/maven2/`).
+#### Dependency Settings
+- **dep.path**: Directory for downloaded dependencies (default: `./lib`)
+- **repo.url**: Maven repository URL (default: `https://repo1.maven.org/maven2/`)
 
-#### Runtime
-- **run.class**: Main class to execute (`Main`).
-- **run.cmd**: Command to run the program (useful if Java is not in the system path, default: `java`).
-
-
+#### System Settings
+These are automatically set based on your OS:
+- **system.sep**: Path separator (`;` on Windows, `:` on Unix)
+- **system.shell**: Shell command (`cmd` on Windows, `sh` on Unix) 
+- **system.shell.parm**: Shell parameter (`/c` on Windows, `-c` on Unix)
 
 ## Contributing
 

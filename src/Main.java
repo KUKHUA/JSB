@@ -1,126 +1,35 @@
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
+import Command.Manager;
+import JSBCommands.BuildCommand;
+import JSBCommands.DependencyCommand;
+import JSBCommands.InitCommand;
+import JSBCommands.PackageCommand;
+import JSBCommands.RunCommand;
+import JSBCommands.Util.Config;
+import JSBCommands.Util.Dependency;
 
-class Main {
+public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        Manager commandManager = new Manager(
+            "Java Simple Build (JSB) -",
+            "0.0.4-alpha-rework",
+            "\"Write Java, not XML.\""
+        );
         Config config = new Config();
-        final String usage = " Usage: jsb [init|build|run|package|add|remove] ";
+        Dependency dependency = new Dependency(config);
 
-        if (args.length == 0) {
-            System.out.println("Error: No command provided\n" + usage);
-            return;
-        }
+        commandManager.register("init", new InitCommand(config));
+        commandManager.register("build", new BuildCommand(config, dependency));
+        commandManager.register("run", new RunCommand(config, dependency));
+        commandManager.register(
+            "dep",
+            new DependencyCommand(config, dependency)
+        );
+        commandManager.register(
+            "package",
+            new PackageCommand(config, dependency)
+        );
 
-        if (
-            args[0].equals("init") ||
-            args[0].equals("initialize") ||
-            args[0].equals("create")
-        ) {
-            System.out.println("Initialized environment.");
-
-            config.initConfig();
-            File srcDir = new File("src");
-            if (!srcDir.exists()) {
-                srcDir.mkdir();
-            }
-
-            File mainJavaFile = new File("src/Main.java");
-            if (!mainJavaFile.exists()) {
-                try {
-                    mainJavaFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            mainJavaFile.setWritable(true);
-
-            try (FileOutputStream out = new FileOutputStream(mainJavaFile)) {
-                out.write(
-                    "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}".getBytes()
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return;
-        }
-
-        if (!config.ready()) {
-            System.out.println(
-                "Error: build.properties not found. Run 'jsb init' to initialize the environment."
-            );
-            return;
-        }
-
-        Dependency dep = new Dependency(config);
-        BuildManager BuildMan = new BuildManager(config, dep);
-
-        try {
-            switch (args[0]) {
-                case "build":
-                    System.out.println("Building...");
-                    BuildMan.build();
-                    break;
-                case "run":
-                    System.out.println("Running...");
-
-                    // Check if there are arguments
-                    if (args != null && args.length > 2) {
-                        // Remove the first two arguments
-                        String[] runArgs = Arrays.copyOfRange(
-                            args,
-                            2,  // Start from index 2
-                            args.length
-                        );
-                        BuildMan.run(runArgs);
-                    } else {
-                        // If no arguments to pass
-                        BuildMan.run(new String[0]); // Pass an empty array if no additional arguments
-                    }
-                    break;
-                case "package":
-                case "jar":
-                case "pack":
-                    System.out.println("Packaging...");
-                    BuildMan.jar();
-                    break;
-                case "add":
-                    for (String arg : args) {
-                        if (!arg.equals("add") && dep.doesExist(arg)) {
-                            dep.add(arg);
-                            System.out.println("Added dependency " + arg);
-                        } else if (!arg.equals("add")) {
-                            System.out.println(
-                                "Dependency " + arg + " does not exist."
-                            );
-                        }
-                    }
-                    break;
-                case "remove":
-                    for (String arg : args) {
-                        if (
-                            !arg.equals("add") &&
-                            config.get("deps").contains(arg)
-                        ) {
-                            dep.remove(arg);
-                            System.out.println("Removed dependency: " + arg);
-                        } else if (!arg.equals("add")) {
-                            System.out.println(
-                                "Dependency " + arg + " does not exist."
-                            );
-                        }
-                    }
-                    break;
-                default:
-                    System.out.println("Error: Invalid command\n" + usage);
-            }
-        } catch (Exception e) {
-            System.out.println(
-                "Error: Invalid command\n" + usage + e.getMessage()
-            );
-        }
+        commandManager.execute(args);
     }
 }
