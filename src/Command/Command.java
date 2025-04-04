@@ -101,9 +101,9 @@ public class Command {
     }
 
     /**
-     * Returns the orginal command name.
+     * Returns the original command name.
      *
-     * @return The orginal command name as a string.
+     * @return The original command name as a string.
      */
     public String prefix() {
         return this.commandName;
