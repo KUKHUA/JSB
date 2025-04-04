@@ -25,8 +25,9 @@ jobs:
         
     - name: Build classes
       run: |
-        ls ./src
-        javac -d ./classes ./src/**/*.java
+        ls -R ./src  # List the directory structure recursively
+        find ./src -name "*.java" > sources.txt
+        javac -d ./classes @sources.txt  # Use the list of found files for compilation
 
     - name: Package
       run: |
