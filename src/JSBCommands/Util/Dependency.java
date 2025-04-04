@@ -10,16 +10,34 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles Maven dependency management operations including downloading, adding, removing,
+ * and checking dependencies.
+ */
 public class Dependency {
 
     private Config config;
     private String BASE_URL = "https://repo1.maven.org/maven2/";
 
+    /**
+     * Constructs a new Dependency manager with the specified configuration.
+     * 
+     * @param config The configuration object containing dependency settings
+     */
     public Dependency(Config config) {
         this.config = config;
         if (config.ready()) BASE_URL = config.get("repo.url");
     }
 
+    /**
+     * Downloads a Maven dependency from the repository.
+     * 
+     * @param mavenString The Maven coordinate string in format "groupId:artifactId:version"
+     * @return The downloaded JAR file
+     * @throws IOException If there's an error downloading the file
+     * @throws URISyntaxException If the Maven string cannot be converted to a valid URI
+     * @throws IllegalArgumentException If the Maven string is null, empty or malformed
+     */
     public File get(String mavenString) throws IOException, URISyntaxException {
         if (mavenString == null || mavenString.trim().isEmpty()) {
             throw new IllegalArgumentException(
@@ -60,6 +78,14 @@ public class Dependency {
         return outputFile;
     }
 
+    /**
+     * Loads multiple dependencies into a local directory.
+     * Skips dependencies that are already present.
+     * 
+     * @param listOfDeps Array of Maven coordinate strings
+     * @param localPathString The local directory path to store dependencies
+     * @throws Exception If there's an error during dependency loading
+     */
     public void loadDeps(String[] listOfDeps, String localPathString)
         throws Exception {
         for (String dep : listOfDeps) {
@@ -76,6 +102,11 @@ public class Dependency {
         }
     }
 
+    /**
+     * Adds a new dependency to the configuration.
+     * 
+     * @param mavenString The Maven coordinate string to add
+     */
     public void add(String mavenString) {
         List<String> depList = new ArrayList<>();
         if (config.get("deps") != null) {
@@ -90,6 +121,11 @@ public class Dependency {
         config.set("deps", newDeps);
     }
 
+    /**
+     * Lists all downloaded dependency files.
+     * 
+     * @return ArrayList of File objects representing the downloaded dependencies
+     */
     public ArrayList<File> listAll() {
         //Should be like this lib/dep1.jar, lib/dep2.jar, lib/dep3.jar
         ArrayList<File> depFiles = new ArrayList<>();
@@ -113,6 +149,11 @@ public class Dependency {
         return depFiles;
     }
 
+    /**
+     * Removes a dependency from the configuration.
+     * 
+     * @param mavenString The Maven coordinate string to remove
+     */
     public void remove(String mavenString) {
         List<String> depList = new ArrayList<>();
         if (config.get("deps") != null) {
@@ -128,6 +169,12 @@ public class Dependency {
         config.set("deps", newDeps);
     }
 
+    /**
+     * Checks if a dependency file exists locally.
+     * 
+     * @param mavenString The Maven coordinate string to check
+     * @return true if the dependency exists locally, false otherwise
+     */
     public boolean hasFile(String mavenString) {
         String[] parts = mavenString.split(":");
         if (parts.length != 3) {
@@ -140,6 +187,12 @@ public class Dependency {
         return depFile.exists();
     }
 
+    /**
+     * Checks if a dependency exists in the remote repository.
+     * 
+     * @param mavenString The Maven coordinate string to check
+     * @return true if the dependency exists in the repository, false otherwise
+     */
     public boolean doesExist(String mavenString) {
         String[] parts = mavenString.split(":");
         if (parts.length != 3) {

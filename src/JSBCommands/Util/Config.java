@@ -6,27 +6,46 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Configuration manager that handles loading, saving and accessing build properties.
+ * Uses a properties file to store configuration settings for build, Java, packaging
+ * and dependency management.
+ */
 public class Config {
 
+    /** Properties object storing the configuration key-value pairs */
     private Properties properties;
+    
+    /** Flag indicating if the configuration has been successfully loaded */
     private boolean isReady = false;
 
+    /** Creates a new Config instance */
     public Config() {}
 
+    /**
+     * Checks if the configuration has been loaded successfully
+     * @return true if configuration is ready, false otherwise
+     */
     public boolean ready() {
         return isReady;
     }
 
+    /**
+     * Initializes the configuration by loading existing properties file
+     * or creating default properties if file doesn't exist
+     */
     public void initConfig() {
         File buildPropFile = new File("build.properties");
         this.properties = new Properties();
         if (buildPropFile.exists()) {
             loadProperties();
         }
-
         setDefaultProperties();
     }
 
+    /**
+     * Saves current properties to the build.properties file
+     */
     private void saveProperties() {
         try {
             properties.store(new FileOutputStream("build.properties"), null);
@@ -35,6 +54,9 @@ public class Config {
         }
     }
 
+    /**
+     * Loads properties from the build.properties file
+     */
     public void loadProperties() {
         try {
             FileInputStream in = new FileInputStream("build.properties");
@@ -46,6 +68,10 @@ public class Config {
         }
     }
 
+    /**
+     * Sets default configuration properties for build, Java, packaging and system settings.
+     * Properties include build paths, commands, Java runtime settings, and system-specific values.
+     */
     private void setDefaultProperties() {
         properties.setProperty("build.cmd", "javac");
         properties.setProperty("code.path", "./src");
@@ -72,10 +98,20 @@ public class Config {
         saveProperties();
     }
 
+    /**
+     * Retrieves a property value by its key
+     * @param key The property key to look up
+     * @return The value associated with the key, or null if not found
+     */
     public String get(String key) {
         return properties.getProperty(key);
     }
 
+    /**
+     * Sets a property value and saves it to the properties file
+     * @param key The property key to set
+     * @param value The value to associate with the key
+     */
     public void set(String key, String value) {
         properties.setProperty(key, value);
         saveProperties();

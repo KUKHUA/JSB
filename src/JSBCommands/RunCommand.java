@@ -8,16 +8,36 @@ import JSBCommands.Util.Runner;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Handles the execution of Java programs by managing build and run operations.
+ * This command handler builds the project and executes the compiled Java program
+ * with specified classpath and runtime arguments.
+ */
 public class RunCommand extends Handler {
 
     Config config;
     Dependency dependency;
 
+    /**
+     * Constructs a new RunCommand instance.
+     * 
+     * @param config     The configuration object containing system and build settings
+     * @param dependency The dependency manager for the project
+     * @throws IOException If there's an error initializing the command handler
+     */
     public RunCommand(Config config, Dependency dependency) throws IOException {
         this.config = config;
         this.dependency = dependency;
     }
 
+    /**
+     * Handles the run command by building and executing the Java program.
+     * First builds the project, then executes it with the specified runtime arguments.
+     * Uses system-specific shell commands to launch the Java process.
+     *
+     * @param command The command object containing runtime arguments for the Java program
+     * @throws Exception If there's an error during building or execution
+     */
     @Override
     public void handleCommand(Command command) throws Exception {
         if (!this.config.ready()) this.config.initConfig();
@@ -59,6 +79,11 @@ public class RunCommand extends Handler {
         else System.out.println("Running probably failed : (");
     }
 
+    /**
+     * Returns the help information for the run command.
+     * 
+     * @return A string containing usage instructions and description of the run command
+     */
     @Override
     public String getHelpInfo() {
         return (

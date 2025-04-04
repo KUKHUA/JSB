@@ -7,23 +7,36 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+/**
+ * Command handler for initializing a new Java project.
+ * Creates the basic project structure and example Main class.
+ * 
+ * @extends Handler
+ */
 public class InitCommand extends Handler {
 
-    Config config;
-    final String exampleMainClass =
+    /** Configuration instance for the project */
+    private Config config;
+    
+    /** Template for the example Main class */
+    private final String exampleMainClass =
         "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}";
 
     /**
-     * Constructor for the init command.
-     * It creates src/Main.java with a example class if it does not exist.
-     * @param config - the global config, {@link Config}
+     * Creates a new InitCommand instance.
+     * 
+     * @param {Config} config - The global configuration object
      */
     public InitCommand(Config config) {
         this.config = config;
     }
 
     /**
-     * The class that handles the command.
+     * Handles the init command execution.
+     * Initializes project configuration and creates basic project structure.
+     * 
+     * @param {Command} command - The command object containing execution parameters
+     * @throws {IOException} If there are issues creating directories or files
      */
     @Override
     public void handleCommand(Command command) throws IOException {
@@ -36,8 +49,10 @@ public class InitCommand extends Handler {
     }
 
     /**
-     * Creates a folder if it doesn't already exist.
-     * @param name  - name of the folder
+     * Creates a new directory if it doesn't exist.
+     * 
+     * @param {String} name - The name/path of the directory to create
+     * @throws {IOException} If directory creation fails
      */
     private void folderCreate(String name) throws IOException {
         File theFile = new File(name);
@@ -47,9 +62,11 @@ public class InitCommand extends Handler {
     }
 
     /**
-     * Creates a file if it doesn't already exist.
-     * @param name  - name of the file
-     * @param content - what to write to the file
+     * Creates a new file with specified content if it doesn't exist.
+     * 
+     * @param {String} name - The name/path of the file to create
+     * @param {String} content - The content to write to the file
+     * @throws {IOException} If file creation or writing fails
      */
     private void fileCreate(String name, String content) throws IOException {
         File theFile = new File(name);
@@ -63,6 +80,11 @@ public class InitCommand extends Handler {
         }
     }
 
+    /**
+     * Returns help information about the init command.
+     * 
+     * @return {String} Formatted help text explaining command usage
+     */
     @Override
     public String getHelpInfo() {
         return (

@@ -7,16 +7,37 @@ import JSBCommands.Util.Dependency;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Handles dependency management commands for adding, removing, and listing project dependencies.
+ * Extends the base Handler class to process dependency-related operations.
+ */
 public class DependencyCommand extends Handler {
 
+    /** Configuration manager instance */
     Config config;
+    /** Dependency manager instance */
     Dependency dependency;
 
+    /**
+     * Constructs a new DependencyCommand handler.
+     * @param config The configuration manager instance
+     * @param dependency The dependency manager instance
+     */
     public DependencyCommand(Config config, Dependency dependency) {
         this.config = config;
         this.dependency = dependency;
     }
 
+    /**
+     * Handles dependency management commands.
+     * Supports three actions:
+     * - add: Adds one or more dependencies
+     * - remove: Removes a specific dependency
+     * - list: Shows all current dependencies
+     *
+     * @param command The command object containing the action and dependencies
+     * @throws IllegalArgumentException if the command arguments are invalid
+     */
     @Override
     public void handleCommand(Command command) {
         if (!this.config.ready()) this.config.initConfig();
@@ -84,6 +105,12 @@ public class DependencyCommand extends Handler {
         }
     }
 
+    /**
+     * Returns the help information for the dependency command.
+     * Provides usage instructions and available actions.
+     *
+     * @return A formatted string containing the command's help information
+     */
     @Override
     public String getHelpInfo() {
         return (

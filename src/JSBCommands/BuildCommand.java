@@ -14,17 +14,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * BuildCommand handles the compilation of Java source files in the project.
+ * It manages dependency resolution and builds Java files into class files.
+ */
 public class BuildCommand extends Handler {
 
+    /** Configuration manager for build settings */
     Config config;
+    /** Dependency manager for handling project dependencies */
     Dependency dependency;
 
+    /**
+     * Constructs a new BuildCommand with the specified configuration and dependency manager.
+     * 
+     * @param config Configuration manager containing build settings
+     * @param dependency Dependency manager for handling project dependencies
+     * @throws IOException If there's an error accessing configuration files
+     */
     public BuildCommand(Config config, Dependency dependency)
         throws IOException {
         this.config = config;
         this.dependency = dependency;
     }
 
+    /**
+     * Handles the build command execution by compiling Java source files.
+     * The method performs the following steps:
+     * 1. Initializes configuration if not ready
+     * 2. Loads dependencies if specified
+     * 3. Finds all Java source files in the code path
+     * 4. Constructs and executes the build command
+     *
+     * @param command The command object containing build parameters
+     * @throws Exception If there's an error during the build process
+     */
     @Override
     public void handleCommand(Command command) throws Exception {
         if (!this.config.ready()) this.config.initConfig();
@@ -84,6 +108,11 @@ public class BuildCommand extends Handler {
         else System.out.println("Building probably failed : (");
     }
 
+    /**
+     * Returns help information about the build command.
+     * 
+     * @return String containing usage instructions and command description
+     */
     @Override
     public String getHelpInfo() {
         return (

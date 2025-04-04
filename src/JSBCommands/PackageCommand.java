@@ -13,17 +13,40 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * Handles packaging of Java projects into executable JAR files.
+ * This command extracts dependencies, combines class files, and creates a runnable JAR.
+ */
 public class PackageCommand extends Handler {
 
+    /** Configuration manager for the build process */
     Config config;
+    /** Dependency manager for handling project dependencies */
     Dependency dependency;
 
+    /**
+     * Creates a new PackageCommand instance.
+     * 
+     * @param config Configuration manager instance
+     * @param dependency Dependency manager instance
+     * @throws Exception If initialization fails
+     */
     public PackageCommand(Config config, Dependency dependency)
         throws Exception {
         this.config = config;
         this.dependency = dependency;
     }
 
+    /**
+     * Handles the package command execution.
+     * Performs the following steps:
+     * 1. Initializes configuration if not ready
+     * 2. Extracts dependencies from JAR files
+     * 3. Creates the final executable JAR
+     *
+     * @param command The command to handle
+     * @throws Exception If packaging process fails
+     */
     @Override
     public void handleCommand(Command command) throws Exception {
         if (!this.config.ready()) this.config.initConfig();
@@ -116,6 +139,11 @@ public class PackageCommand extends Handler {
         else System.out.println("Packing probably failed : (");
     }
 
+    /**
+     * Returns help information about the package command.
+     *
+     * @return String containing usage information and command description
+     */
     @Override
     public String getHelpInfo() {
         return (
