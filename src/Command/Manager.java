@@ -116,7 +116,7 @@ public class Manager {
                 } catch (Exception e) {
                     throw new RuntimeException(
                         String.format(
-                            "The command command %s failed, %s",
+                            "The command %s failed, %s",
                             command.prefix(),
                             e.getMessage()
                         )
