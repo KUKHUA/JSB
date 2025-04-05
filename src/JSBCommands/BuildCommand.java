@@ -123,14 +123,12 @@ public class BuildCommand extends Handler {
         buildCommand.add("-cp"); // speficy classpath
 
         buildCommand.add(
-            // ./classes:./lib:./src:*
+            // ./lib/*:./classes/*:*
             String.format(
-                "\"%s%s%s%s%s%s%s\"",
-                config.get("build.builds"),
-                config.get("system.sep"),
+                "\" %s/*%s%s/*%s*\"",,
                 config.get("dep.path"),
                 config.get("system.sep"),
-                config.get("code.path"),
+                config.get("build.builds"),
                 config.get("system.sep"),
                 "*"
             )
