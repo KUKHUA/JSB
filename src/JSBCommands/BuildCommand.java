@@ -125,7 +125,7 @@ public class BuildCommand extends Handler {
         buildCommand.add(
             // ./lib/*:./classes/*:*
             String.format(
-                "\" %s/*%s%s/*%s*\"",,
+                "\" %s/*%s%s/*%s*\"",
                 config.get("dep.path"),
                 config.get("system.sep"),
                 config.get("build.builds"),
