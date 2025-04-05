@@ -75,7 +75,7 @@ public class RunCommand extends Handler {
         runCommand.add(
             // ./lib/*:./classes/*:*
             String.format(
-                "\"%s/*%s%s/*%s*\"",
+                "\"%s/*%s%s%s*\"",
                 config.get("dep.path"),
                 config.get("system.sep"),
                 config.get("build.builds"),

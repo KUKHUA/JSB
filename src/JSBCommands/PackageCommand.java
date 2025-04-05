@@ -116,11 +116,6 @@ public class PackageCommand extends Handler {
                                 entry.getName()
                             ).getCanonicalFile();
 
-                            // Ensure the new file path is within the intended directory
-                            if (!newFile.toPath().startsWith(depClassesPath.toPath())) {
-                                throw new Exception("Bad zip entry: " + entry.getName());
-                            }
-
                             // Handle directory entries
                             if (entry.isDirectory()) {
                                 // Create directories for entries that are directories
