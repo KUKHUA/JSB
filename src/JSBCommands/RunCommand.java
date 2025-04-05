@@ -73,14 +73,12 @@ public class RunCommand extends Handler {
         runCommand.add(config.get("java.path")); // java
         runCommand.add("-cp"); // set classpath
         runCommand.add(
-            // ./classes:./lib:./src:*"
+            // ./lib/*:./classes/*:*
             String.format(
-                "\"%s%s%s%s%s%s%s\"",
-                config.get("build.builds"),
-                config.get("system.sep"),
+                "\"%s/*%s%s/*%s*\"",
                 config.get("dep.path"),
                 config.get("system.sep"),
-                config.get("code.path"),
+                config.get("build.builds"),
                 config.get("system.sep"),
                 "*"
             )
