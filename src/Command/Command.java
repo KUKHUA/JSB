@@ -5,9 +5,6 @@ import java.util.Arrays;
 
 /**
  * Parses the user's input in mutiple ways.
- *
- * @author (your name)
- * @version 1
  */
 public class Command {
 

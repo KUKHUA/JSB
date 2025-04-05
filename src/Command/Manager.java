@@ -103,10 +103,17 @@ public class Manager {
             }
 
             Command command = new Command(userInput);
-            if (command.prefix().equals("help")) {
-                this.displayHelp();
+            if (
+                command.prefix().equals("help") ||
+                command.prefix().equals("--help") ||
+                command.prefix().equals("-h") ||
+                command.prefix().equals("-help") ||
+                command.prefix().equals("--h")
+            ) {
+                displayHelp();
                 return;
             }
+
 
             Handler handler = commands.get(command.prefix());
             if (handler != null) {
@@ -166,7 +173,7 @@ public class Manager {
         this.helpInfo.clear();
         this.helpInfo.add(
                 String.format(
-                    "___\n%s %s - %s\n___\n",
+                    "%s %s - %s\n\n",
                     this.applicationName,
                     this.applicationVersion,
                     this.applicationDescription
