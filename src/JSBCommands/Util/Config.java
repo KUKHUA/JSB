@@ -37,8 +37,6 @@ public class Config {
     /** Flag indicating if the configuration has been successfully loaded */
     private boolean isReady = false;
 
-    /** Creates a new Config instance */
-    public Config() {}
 
     /**
      * Checks if the configuration has been loaded successfully

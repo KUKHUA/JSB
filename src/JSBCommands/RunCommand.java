@@ -19,7 +19,7 @@
 package JSBCommands;
 
 import Command.Command;
-import Command.Handler;
+import Command.IHandler;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 import JSBCommands.Util.Runner;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * This command handler builds the project and executes the compiled Java program
  * with specified classpath and runtime arguments.
  */
-public class RunCommand extends Handler {
+public class RunCommand implements IHandler {
 
     Config config;
     Dependency dependency;

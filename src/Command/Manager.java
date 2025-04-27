@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Manages the CLI app, registers {@link Handler}s and executes {@link Command}s.
+ * Manages the CLI app, registers {@link IHandler}s and executes {@link Command}s.
  */
 public class Manager {
 
-    private HashMap<String, Handler> commands = new HashMap<>();
+    private HashMap<String, IHandler> commands = new HashMap<>();
     private ArrayList<String> helpInfo = new ArrayList<>();
     private String applicationName;
     private String applicationVersion;
@@ -82,7 +82,7 @@ public class Manager {
                 return;
             }
 
-            Handler handler = commands.get(command.prefix());
+            IHandler handler = commands.get(command.prefix());
             if (handler != null) {
                 command.trim();
                 try {
@@ -107,56 +107,7 @@ public class Manager {
             System.out.println("---");
         }
     }
-
-    /**
-     * Executes the command based on the user input. If the command is not found, it will display an error message.
-     * It will also display help information on error.
-     *
-     * @param userInput The user input, which is a string.
-     */
-    public void execute(String userInput) {
-        try {
-            if (userInput.isBlank()) {
-                throw new IllegalArgumentException("No command entered.");
-            }
-
-            Command command = new Command(userInput);
-            if (
-                command.prefix().equals("help") ||
-                command.prefix().equals("--help") ||
-                command.prefix().equals("-h") ||
-                command.prefix().equals("-help") ||
-                command.prefix().equals("--h")
-            ) {
-                displayHelp();
-                return;
-            }
-
-
-            Handler handler = commands.get(command.prefix());
-            if (handler != null) {
-                command.trim();
-                try {
-                    handler.handleCommand(command);
-                } catch (Exception e) {
-                    throw new RuntimeException(
-                        String.format(
-                            "The command %s failed, %s",
-                            command.prefix(),
-                            e.getMessage()
-                        )
-                    );
-                }
-            } else {
-                System.out.println("Command not found.");
-                this.displayHelp();
-            }
-        } catch (Exception e) {
-            System.out.println("Error processing: " + e.getMessage());
-            this.displayHelp();
-        }
-    }
-
+    
     /**
      * Displays the help information.
      */
@@ -167,12 +118,12 @@ public class Manager {
     }
 
     /**
-     * Registers a command with the {@link Handler} that will handle it.
+     * Registers a command with the {@link IHandler} that will handle it.
      *
      * @param commandName The name of the command.
-     * @param handler The {@link Handler} that will handle the command.
+     * @param handler The {@link IHandler} that will handle the command.
      */
-    public void register(String commandName, Handler handler) {
+    public void register(String commandName, IHandler handler) {
         commands.put(commandName, handler);
         this.helpInfo.add(
                 String.format("%s - %s\n", commandName, handler.getHelpInfo())

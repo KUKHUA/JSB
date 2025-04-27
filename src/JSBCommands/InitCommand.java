@@ -19,7 +19,7 @@
 package JSBCommands;
 
 import Command.Command;
-import Command.Handler;
+import Command.IHandler;
 import JSBCommands.Util.Config;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,7 +31,7 @@ import java.io.IOException;
  * 
  * @extends Handler
  */
-public class InitCommand extends Handler {
+public class InitCommand implements IHandler {
 
     /** Configuration instance for the project */
     private Config config;

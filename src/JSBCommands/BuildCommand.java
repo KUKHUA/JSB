@@ -19,7 +19,7 @@
 package JSBCommands;
 
 import Command.Command;
-import Command.Handler;
+import Command.IHandler;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 import JSBCommands.Util.Runner;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * BuildCommand handles the compilation of Java source files in the project.
  * It manages dependency resolution and builds Java files into class files.
  */
-public class BuildCommand extends Handler {
+public class BuildCommand implements IHandler {
 
     /** Configuration manager for build settings */
     Config config;

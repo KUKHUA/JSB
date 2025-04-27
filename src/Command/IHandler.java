@@ -19,21 +19,21 @@
 package Command;
 
 /**
- * Handler class for a command.
+ * Handler interface for a command.
  *
  * @author pascal
  * @version 1
  */
-public abstract class Handler {
+public interface IHandler {
 
     /**
      * What your command actually does.
      * Parse all user input here.
      */
-    public abstract void handleCommand(Command command) throws Exception;
+    void handleCommand(Command command) throws Exception;
 
     /**
      * Help information about your command.
      */
-    public abstract String getHelpInfo();
+    String getHelpInfo();
 }

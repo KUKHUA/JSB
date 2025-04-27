@@ -19,7 +19,7 @@
 package JSBCommands;
 
 import Command.Command;
-import Command.Handler;
+import Command.IHandler;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 import JSBCommands.Util.Runner;
@@ -35,7 +35,7 @@ import java.util.zip.ZipInputStream;
  * Handles packaging of Java projects into executable JAR files.
  * This command extracts dependencies, combines class files, and creates a runnable JAR.
  */
-public class PackageCommand extends Handler {
+public class PackageCommand implements IHandler {
 
     /** Configuration manager for the build process */
     Config config;

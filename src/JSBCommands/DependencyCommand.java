@@ -19,7 +19,7 @@
 package JSBCommands;
 
 import Command.Command;
-import Command.Handler;
+import Command.IHandler;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 import java.io.File;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Handles dependency management commands for adding, removing, and listing project dependencies.
  * Extends the base Handler class to process dependency-related operations.
  */
-public class DependencyCommand extends Handler {
+public class DependencyCommand implements IHandler {
 
     /** Configuration manager instance */
     Config config;

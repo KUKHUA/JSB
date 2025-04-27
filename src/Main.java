@@ -22,6 +22,7 @@ import JSBCommands.DependencyCommand;
 import JSBCommands.InitCommand;
 import JSBCommands.PackageCommand;
 import JSBCommands.RunCommand;
+import JSBCommands.ConfigCommand;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 
@@ -47,6 +48,7 @@ public class Main {
             "package",
             new PackageCommand(config, dependency)
         );
+        commandManager.register("config", new ConfigCommand(config));
 
         commandManager.execute(args);
     }
