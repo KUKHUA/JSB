@@ -20,7 +20,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4.7.0
       with:
-        java-version: '23'
+        java-version: '21'
         distribution: 'temurin'
         
     - name: Build classes
