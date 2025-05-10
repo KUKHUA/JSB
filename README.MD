@@ -63,8 +63,8 @@ Java Simple Build Tool (JSB) is a straightforward build tool for Java projects. 
 ```bash
     git clone https://github.com/KUKHUA/JSB.git
     cd JSB
-    cd src
-    javac *.java
+    find ./src -name "*.java" > sources.txt
+    javac -d ./classes @sources.txt  # Use the list of found files for compilation
     jar cfe jsb.jar Main *.class
     mv jsb.jar ..
     cd ..
