@@ -30,6 +30,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.nio.file.*;
+import java.io.IOException;
 
 /**
  * Handles packaging of Java projects into executable JAR files.
@@ -93,12 +95,29 @@ public class PackageCommand implements IHandler {
         jarCommand.add(config.get("dep.path") + "/classes/");
         jarCommand.add(".");
 
+
         shellCommand.add(String.join(" ", jarCommand));
         //unzip every jar file in the dep.path to dep.path/classes and ignore META-INF folder, also write into eixsting folders
         File depClassesPath = new File(config.get("dep.path") + "/classes/");
         if (!depClassesPath.exists()) {
             depClassesPath.mkdirs(); // Ensure the target classes directory exists
         }
+
+        Path resDir = Paths.get("./res");
+        Path classesDir = Paths.get(config.get("build.builds"));
+
+        Files.walk(resDir)
+            .filter(Files::isRegularFile)
+            .forEach(src -> {
+                try {
+                    Path dest = classesDir.resolve(resDir.relativize(src));
+                    Files.createDirectories(dest.getParent());
+                    Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
 
         for (File file : dependency.listAll()) {
             if (file.getName().endsWith(".jar")) { // Check if the file is a .jar
@@ -151,7 +170,23 @@ public class PackageCommand implements IHandler {
         boolean exitedGood = Runner.runCommand(shellCommand);
         if (exitedGood) System.out.println("Packing exited successfully!");
         else System.out.println("Packing probably failed : (");
+
+        System.out.println("Cleaning up " + config.get("build.builds") + " ...");
+        this.deleteDirectoryContents(classesDir);
     }
+
+    private void deleteDirectoryContents(Path dir) throws IOException {
+        if (!Files.exists(dir)) return;
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+            for (Path entry : stream) {
+                if (Files.isDirectory(entry)) {
+                    deleteDirectoryContents(entry); // recurse
+                }
+                Files.delete(entry);
+            }
+        }
+    }
+
 
     /**
      * Returns help information about the package command.

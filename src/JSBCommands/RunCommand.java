@@ -69,21 +69,19 @@ public class RunCommand implements IHandler {
         shellCommand.add(config.get("system.shell.parm")); // -c or /c
 
         ArrayList<String> runCommand = new ArrayList<>();
+        String sep = config.get("system.sep"); 
 
         runCommand.add(config.get("java.path")); // java
         runCommand.add("-cp"); // set classpath
-        runCommand.add(
-            // ./lib/*:./classes/*:*
-            String.format(
-                "\"%s/*%s%s%s*\"",
-                config.get("dep.path"),
-                config.get("system.sep"),
-                config.get("build.builds"),
-                config.get("system.sep"),
-                "*"
-            )
-        );
-
+        runCommand.add(String.format(
+            "%s/*%s%s%s%s",
+            config.get("dep.path"),      // ./lib
+            sep,
+            config.get("build.builds"),  // ./classes
+            sep,
+            config.get("res.path")       // ./res
+        ));
+        
         runCommand.add(config.get("java.class"));
 
         if (!command.raw().isBlank()) runCommand.addAll(command.getList());

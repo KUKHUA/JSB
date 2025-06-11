@@ -56,5 +56,6 @@ public class Main {
         commandManager.register("config", new ConfigCommand(config));
 
         commandManager.execute(args);
+
     }
 }

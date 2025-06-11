@@ -89,13 +89,16 @@ public class Config {
      * Properties include build paths, commands, Java runtime settings, and system-specific values.
      */
     private void setDefaultProperties() {
-        properties.setProperty("build.cmd", "javac");
         properties.setProperty("code.path", "./src");
+
+        properties.setProperty("build.cmd", "javac");
         properties.setProperty("build.builds", "./classes");
         properties.setProperty("build.verbose", "true");
 
         properties.setProperty("java.path", "java");
         properties.setProperty("java.class", "Main");
+
+        properties.setProperty("resource.path", "./res");
 
         properties.setProperty("package.cmd", "jar");
         properties.setProperty("package.path", "./dist");

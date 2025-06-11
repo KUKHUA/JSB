@@ -61,6 +61,7 @@ public class InitCommand implements IHandler {
         if (!this.config.ready()) this.config.initConfig();
 
         this.folderCreate("src");
+        this.folderCreate("res");
 
         this.fileCreate("src/Main.java", exampleMainClass);
         System.out.println("Initialized project.");
