@@ -79,7 +79,7 @@ public class RunCommand implements IHandler {
             sep,
             config.get("build.builds"),  // ./classes
             sep,
-            config.get("res.path")       // ./res
+            config.get("resource.path")       // ./res
         ));
         
         runCommand.add(config.get("java.class"));
