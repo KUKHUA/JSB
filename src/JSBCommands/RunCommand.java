@@ -33,13 +33,16 @@ import java.util.ArrayList;
  */
 public class RunCommand implements IHandler {
 
-    Config config;
-    Dependency dependency;
+    /** Configuration manager for build and runtime settings */
+    private Config config;
+    
+    /** Dependency manager for handling project dependencies */
+    private Dependency dependency;
 
     /**
      * Constructs a new RunCommand instance.
      * 
-     * @param config     The configuration object containing system and build settings
+     * @param config The configuration object containing system and build settings
      * @param dependency The dependency manager for the project
      * @throws IOException If there's an error initializing the command handler
      */
@@ -58,13 +61,14 @@ public class RunCommand implements IHandler {
      */
     @Override
     public void handleCommand(Command command) throws Exception {
-        if (!this.config.ready()) this.config.initConfig();
+        if (!this.config.ready()) {
+            this.config.initConfig();
+        }
         new BuildCommand(config, dependency).handleCommand(new Command(""));
 
         System.out.println("Running project ...");
 
         ArrayList<String> shellCommand = new ArrayList<>();
-
         shellCommand.add(config.get("system.shell")); // sh or cmd
         shellCommand.add(config.get("system.shell.parm")); // -c or /c
 
@@ -79,18 +83,23 @@ public class RunCommand implements IHandler {
             sep,
             config.get("build.builds"),  // ./classes
             sep,
-            config.get("resource.path")       // ./res
+            config.get("resource.path")  // ./res
         ));
         
         runCommand.add(config.get("java.class"));
 
-        if (!command.raw().isBlank()) runCommand.addAll(command.getList());
+        if (!command.raw().isBlank()) {
+            runCommand.addAll(command.getList());
+        }
 
         shellCommand.add(String.join(" ", runCommand));
         System.out.println("Running the command: " + shellCommand);
         boolean exitedGood = Runner.runCommand(shellCommand);
-        if (exitedGood) System.out.println("Running exited successfully!");
-        else System.out.println("Running probably failed : (");
+        if (exitedGood) {
+            System.out.println("Running exited successfully!");
+        } else {
+            System.out.println("Running probably failed :(");
+        }
     }
 
     /**

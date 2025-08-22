@@ -28,8 +28,6 @@ import java.io.IOException;
 /**
  * Command handler for initializing a new Java project.
  * Creates the basic project structure and example Main class.
- * 
- * @extends Handler
  */
 public class InitCommand implements IHandler {
 
@@ -43,7 +41,7 @@ public class InitCommand implements IHandler {
     /**
      * Creates a new InitCommand instance.
      * 
-     * @param {Config} config - The global configuration object
+     * @param config The global configuration object
      */
     public InitCommand(Config config) {
         this.config = config;
@@ -53,12 +51,14 @@ public class InitCommand implements IHandler {
      * Handles the init command execution.
      * Initializes project configuration and creates basic project structure.
      * 
-     * @param {Command} command - The command object containing execution parameters
-     * @throws {IOException} If there are issues creating directories or files
+     * @param command The command object containing execution parameters
+     * @throws IOException If there are issues creating directories or files
      */
     @Override
     public void handleCommand(Command command) throws IOException {
-        if (!this.config.ready()) this.config.initConfig();
+        if (!this.config.ready()) {
+            this.config.initConfig();
+        }
 
         this.folderCreate("src");
         this.folderCreate("res");
@@ -70,8 +70,8 @@ public class InitCommand implements IHandler {
     /**
      * Creates a new directory if it doesn't exist.
      * 
-     * @param {String} name - The name/path of the directory to create
-     * @throws {IOException} If directory creation fails
+     * @param name The name/path of the directory to create
+     * @throws IOException If directory creation fails
      */
     private void folderCreate(String name) throws IOException {
         File theFile = new File(name);
@@ -83,26 +83,28 @@ public class InitCommand implements IHandler {
     /**
      * Creates a new file with specified content if it doesn't exist.
      * 
-     * @param {String} name - The name/path of the file to create
-     * @param {String} content - The content to write to the file
-     * @throws {IOException} If file creation or writing fails
+     * @param name The name/path of the file to create
+     * @param content The content to write to the file
+     * @throws IOException If file creation or writing fails
      */
     private void fileCreate(String name, String content) throws IOException {
         File theFile = new File(name);
         if (!theFile.exists()) {
             theFile.createNewFile();
-            if (content.isBlank()) return;
+            if (content.isBlank()) {
+                return;
+            }
             theFile.setWritable(true);
-            FileOutputStream outputStream = new FileOutputStream(theFile);
-            outputStream.write(content.getBytes());
-            outputStream.close();
+            try (FileOutputStream outputStream = new FileOutputStream(theFile)) {
+                outputStream.write(content.getBytes());
+            }
         }
     }
 
     /**
      * Returns help information about the init command.
      * 
-     * @return {String} Formatted help text explaining command usage
+     * @return Formatted help text explaining command usage
      */
     @Override
     public String getHelpInfo() {

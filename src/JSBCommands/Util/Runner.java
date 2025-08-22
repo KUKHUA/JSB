@@ -30,15 +30,15 @@ public class Runner {
      * 
      * @param command An ArrayList of strings where the first element is the command
      *               and subsequent elements are arguments
-     * @return boolean Returns true if the command executed successfully (exit code 0),
-     *         false otherwise
-     * @throws Exception if there's an error executing the command (caught internally)
+     * @return true if the command executed successfully (exit code 0), false otherwise
      * 
-     * @example
-     * ArrayList<String> cmd = new ArrayList<>();
+     * <p>Example usage:</p>
+     * <pre>
+     * ArrayList&lt;String&gt; cmd = new ArrayList&lt;&gt;();
      * cmd.add("ls");
      * cmd.add("-l");
      * boolean success = Runner.runCommand(cmd);
+     * </pre>
      */
     public static boolean runCommand(ArrayList<String> command) {
         try {

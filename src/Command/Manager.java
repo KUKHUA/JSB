@@ -22,23 +22,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Manages the CLI app, registers {@link IHandler}s and executes {@link Command}s.
+ * Manages the CLI application, registers {@link IHandler}s and executes {@link Command}s.
+ * This class serves as the central command dispatcher and help system manager.
  */
 public class Manager {
 
+    /** Map of command names to their corresponding handlers */
     private HashMap<String, IHandler> commands = new HashMap<>();
+    
+    /** List of help information strings for display */
     private ArrayList<String> helpInfo = new ArrayList<>();
+    
+    /** Name of the application */
     private String applicationName;
+    
+    /** Version of the application */
     private String applicationVersion;
+    
+    /** Description of the application */
     private String applicationDescription;
 
     /**
-     * Constructor for the Manager, initializes the application name, version and description displayed
-     * on the help screen.
+     * Constructor for the Manager, initializes the application name, version and description
+     * displayed on the help screen.
      *
-     * @param applicationName The name of the application.
-     * @param applicationVersion The version of the application.
-     * @param applicationDescription The description of the application.
+     * @param applicationName The name of the application
+     * @param applicationVersion The version of the application
+     * @param applicationDescription The description of the application
      */
     public Manager(
         String applicationName,
@@ -49,20 +59,20 @@ public class Manager {
         this.applicationVersion = applicationVersion;
         this.applicationDescription = applicationDescription;
         this.helpInfo.add(
-                String.format(
-                    "%s %s - %s\n\n",
-                    this.applicationName,
-                    this.applicationVersion,
-                    this.applicationDescription
-                )
-            );
+            String.format(
+                "%s %s - %s\n\n",
+                this.applicationName,
+                this.applicationVersion,
+                this.applicationDescription
+            )
+        );
     }
 
     /**
      * Executes the command based on the user input. If the command is not found, it will display an error message.
      * It will also display help information on error.
      *
-     * @param userInput The user input, which is an array of strings.
+     * @param userInput The user input as an array of strings
      */
     public void execute(String[] userInput) {
         try {
@@ -71,13 +81,11 @@ public class Manager {
             }
 
             Command command = new Command(userInput);
-            if (
-                command.prefix().equals("help") ||
+            if (command.prefix().equals("help") ||
                 command.prefix().equals("--help") ||
                 command.prefix().equals("-h") ||
                 command.prefix().equals("-help") ||
-                command.prefix().equals("--h")
-            ) {
+                command.prefix().equals("--h")) {
                 displayHelp();
                 return;
             }
@@ -109,7 +117,7 @@ public class Manager {
     }
     
     /**
-     * Displays the help information.
+     * Displays the help information to the console.
      */
     public void displayHelp() {
         for (String help : this.helpInfo) {
@@ -120,43 +128,48 @@ public class Manager {
     /**
      * Registers a command with the {@link IHandler} that will handle it.
      *
-     * @param commandName The name of the command.
-     * @param handler The {@link IHandler} that will handle the command.
+     * @param commandName The name of the command
+     * @param handler The {@link IHandler} that will handle the command
      */
     public void register(String commandName, IHandler handler) {
         commands.put(commandName, handler);
         this.helpInfo.add(
-                String.format("%s - %s\n", commandName, handler.getHelpInfo())
-            );
+            String.format("%s - %s\n", commandName, handler.getHelpInfo())
+        );
     }
 
     /**
-     * Unregisters commands. Note that this isn't very performant because {@link #reloadHelp()}
+     * Unregisters commands. Note that this isn't very performant because it calls {@link #reloadHelp()}.
+     * 
+     * @param commandName The name of the command to unregister
      */
     public void unregister(String commandName) {
         this.commands.remove(commandName);
         this.reloadHelp();
     }
 
+    /**
+     * Reloads the help information by clearing and rebuilding it from registered commands.
+     */
     public void reloadHelp() {
         this.helpInfo.clear();
         this.helpInfo.add(
-                String.format(
-                    "%s %s - %s\n\n",
-                    this.applicationName,
-                    this.applicationVersion,
-                    this.applicationDescription
-                )
-            );
+            String.format(
+                "%s %s - %s\n\n",
+                this.applicationName,
+                this.applicationVersion,
+                this.applicationDescription
+            )
+        );
 
         this.commands.forEach((commandName, handler) -> {
-                this.helpInfo.add(
-                        String.format(
-                            "%s - %s\n",
-                            commandName,
-                            handler.getHelpInfo()
-                        )
-                    );
-            });
+            this.helpInfo.add(
+                String.format(
+                    "%s - %s\n",
+                    commandName,
+                    handler.getHelpInfo()
+                )
+            );
+        });
     }
 }

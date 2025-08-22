@@ -9,3 +9,6 @@ lib
 *.jar
 /lib/*
 /lib
+docs/*
+/docs/*
+docs

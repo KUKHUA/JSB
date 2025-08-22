@@ -19,7 +19,9 @@
 package Command;
 
 /**
- * Handler interface for a command.
+ * Handler interface for command execution.
+ * All command handlers must implement this interface to be registered
+ * with the command manager.
  *
  * @author pascal
  * @version 1
@@ -27,13 +29,21 @@ package Command;
 public interface IHandler {
 
     /**
-     * What your command actually does.
-     * Parse all user input here.
+     * Executes the command with the provided arguments.
+     * This method contains the core logic for processing the command
+     * and should parse all user input appropriately.
+     * 
+     * @param command The command object containing user arguments
+     * @throws Exception If there's an error executing the command
      */
     void handleCommand(Command command) throws Exception;
 
     /**
-     * Help information about your command.
+     * Returns help information about the command.
+     * This information is displayed when the user requests help
+     * or when command execution fails.
+     * 
+     * @return String containing help text and usage information
      */
     String getHelpInfo();
 }
