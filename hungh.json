@@ -1,0 +1,7 @@
+{
+  "mainClass": "Main",
+  "libraries": [
+    ".hungh/test-lib.jar",
+    ".hungh/test-lib2.jar"
+  ]
+}
