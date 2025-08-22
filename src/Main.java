@@ -26,8 +26,21 @@ import JSBCommands.ConfigCommand;
 import JSBCommands.Util.Config;
 import JSBCommands.Util.Dependency;
 
+/**
+ * Main entry point for the Java Simple Build (JSB) tool.
+ * This class initializes the command manager and registers all available commands
+ * including init, build, run, package, dependency management, and configuration commands.
+ */
 public class Main {
 
+    /**
+     * Main method that starts the JSB application.
+     * Creates a command manager, initializes configuration and dependency management,
+     * registers all available commands, and executes the user's command.
+     * 
+     * @param args Command line arguments passed to the application
+     * @throws Exception If there's an error initializing components or executing commands
+     */
     public static void main(String[] args) throws Exception {
         Manager commandManager = new Manager(
             "Java Simple Build (JSB) -",

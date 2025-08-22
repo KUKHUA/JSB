@@ -22,18 +22,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Parses the user's input in mutiple ways.
+ * Parses the user's input in multiple ways.
+ * This class provides various methods to access and manipulate command line arguments.
  */
 public class Command {
 
+    /** The original user input as a string */
     private String userInput;
+    
+    /** The name of the command (first argument) */
     private String commandName;
+    
+    /** List of all arguments including the command name */
     private ArrayList<String> argsList;
 
     /**
      * Constructor for the Command class, initializes the user input and splits it into a list of arguments.
      *
-     * @param userInput The user input, which is a string.
+     * @param userInput The user input as a string
      */
     public Command(String userInput) {
         this.userInput = userInput;
@@ -44,7 +50,7 @@ public class Command {
     /**
      * Constructor for the Command class, initializes the user input and splits it into a list of arguments.
      *
-     * @param userInput The user input, which is an array of strings.
+     * @param userInput The user input as an array of strings
      */
     public Command(String[] userInput) {
         this.userInput = String.join(" ", userInput);
@@ -53,7 +59,7 @@ public class Command {
     }
 
     /**
-     * Removes the first argument from the list of arguments.
+     * Removes the first argument from the list of arguments and updates the user input string.
      */
     public void trim() {
         this.argsList.remove(0);
@@ -63,15 +69,14 @@ public class Command {
     /**
      * Returns the argument at the specified index.
      *
-     * @param argIndex The index of the argument.
-     * @return The argument at the specified index.
+     * @param argIndex The index of the argument
+     * @return The argument at the specified index, or empty string if index is out of bounds
      */
     public String get(int argIndex) {
         try {
-            if (
-                argIndex < 0 || argIndex >= this.argsList.size()
-            ) throw new IndexOutOfBoundsException("Index out of bounds");
-
+            if (argIndex < 0 || argIndex >= this.argsList.size()) {
+                throw new IndexOutOfBoundsException("Index out of bounds");
+            }
             return this.argsList.get(argIndex);
         } catch (IndexOutOfBoundsException e) {
             return "";
@@ -79,16 +84,18 @@ public class Command {
     }
 
     /**
-     * Gives you the number of argumnets.
-     * @return The number of arguments.
+     * Returns the number of arguments.
+     * 
+     * @return The number of arguments
      */
     public int size() {
         return this.argsList.size();
     }
 
     /**
-     * Returns a array list of arguments.
-     * @return The list of arguments.
+     * Returns an ArrayList of arguments.
+     * 
+     * @return The list of arguments
      * @see #get(int)
      * @see #size()
      * @see #raw()
@@ -98,18 +105,18 @@ public class Command {
     }
 
     /**
-     * Returns the entire user input. Duplicate of {@link raw}
+     * Returns the entire user input. Duplicate of {@link #raw()}.
      *
-     * @return The entire user input as a string.
+     * @return The entire user input as a string
      */
     public String get() {
         return this.userInput;
     }
 
     /**
-     * Returns the entire user input. Duplicate of {@link get}
+     * Returns the entire user input. Duplicate of {@link #get()}.
      *
-     * @return The entire user input as a string.
+     * @return The entire user input as a string
      */
     public String raw() {
         return this.userInput;
@@ -118,7 +125,7 @@ public class Command {
     /**
      * Returns the original command name.
      *
-     * @return The original command name as a string.
+     * @return The original command name as a string
      */
     public String prefix() {
         return this.commandName;
