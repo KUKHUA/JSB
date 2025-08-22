@@ -9,3 +9,7 @@ lib
 *.jar
 /lib/*
 /lib
+# Hungh builder temporary files
+.hungh
+hungh.json
+hungh-temp-extract
