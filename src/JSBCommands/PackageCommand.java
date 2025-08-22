@@ -159,7 +159,11 @@ public class PackageCommand implements IHandler {
             while ((entry = zis.getNextEntry()) != null) {
                 if (!entry.getName().startsWith("META-INF/")) { // Ignore META-INF
                     File newFile = new File(targetDir, entry.getName()).getCanonicalFile();
-
+                    File canonicalTargetDir = targetDir.getCanonicalFile();
+                    // Prevent Zip Slip vulnerability: newFile must be under targetDir
+                    if (!newFile.getPath().startsWith(canonicalTargetDir.getPath() + File.separator)) {
+                        throw new IOException("Bad zip entry: " + entry.getName());
+                    }
                     // Handle directory entries
                     if (entry.isDirectory()) {
                         if (!newFile.exists()) {
