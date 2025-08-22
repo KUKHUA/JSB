@@ -19,6 +19,7 @@
 import Command.Manager;
 import JSBCommands.BuildCommand;
 import JSBCommands.DependencyCommand;
+import JSBCommands.DocCommand;
 import JSBCommands.InitCommand;
 import JSBCommands.PackageCommand;
 import JSBCommands.RunCommand;
@@ -67,6 +68,11 @@ public class Main {
         );
         
         commandManager.register("config", new ConfigCommand(config));
+
+        DocCommand docCommand = new DocCommand(config);
+        commandManager.register("doc", docCommand);
+        commandManager.register("docs", docCommand);
+        commandManager.register("documentation", docCommand);
 
         commandManager.execute(args);
 
