@@ -34,7 +34,10 @@ import java.util.List;
  */
 public class Dependency {
 
+    /** Configuration manager instance */
     private Config config;
+    
+    /** Base URL for Maven repository */
     private String BASE_URL = "https://repo1.maven.org/maven2/";
 
     /**
@@ -44,7 +47,9 @@ public class Dependency {
      */
     public Dependency(Config config) {
         this.config = config;
-        if (config.ready()) BASE_URL = config.get("repo.url");
+        if (config.ready()) {
+            BASE_URL = config.get("repo.url");
+        }
     }
 
     /**
@@ -75,17 +80,14 @@ public class Dependency {
         String artifactID = parts[1];
         String version = parts[2];
         String jarFileName = artifactID + "-" + version + ".jar";
-        String path =
-            groupID + "/" + artifactID + "/" + version + "/" + jarFileName;
+        String path = groupID + "/" + artifactID + "/" + version + "/" + jarFileName;
 
         URL url = new URI(BASE_URL + path).toURL();
         File outputFile = new File(jarFileName);
 
         // Download and save the file
-        try (
-            InputStream in = url.openStream();
-            FileOutputStream out = new FileOutputStream(outputFile)
-        ) {
+        try (InputStream in = url.openStream();
+             FileOutputStream out = new FileOutputStream(outputFile)) {
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = in.read(buffer)) != -1) {
@@ -98,16 +100,17 @@ public class Dependency {
 
     /**
      * Loads multiple dependencies into a local directory.
-     * Skips dependencies that are already present.
+     * Skips dependencies that are already present locally.
      * 
      * @param listOfDeps Array of Maven coordinate strings
      * @param localPathString The local directory path to store dependencies
      * @throws Exception If there's an error during dependency loading
      */
-    public void loadDeps(String[] listOfDeps, String localPathString)
-        throws Exception {
+    public void loadDeps(String[] listOfDeps, String localPathString) throws Exception {
         for (String dep : listOfDeps) {
-            if (hasFile(dep)) continue;
+            if (hasFile(dep)) {
+                continue;
+            }
             System.out.println("Loading dependency: " + dep);
             File depFile = this.get(dep);
             File localPath = new File(localPathString);
@@ -140,12 +143,13 @@ public class Dependency {
     }
 
     /**
-     * Lists all downloaded dependency files.
+     * Lists all downloaded dependency files in the dependency directory.
+     * Checks the configuration for registered dependencies and returns
+     * those that exist as files in the local dependency path.
      * 
      * @return ArrayList of File objects representing the downloaded dependencies
      */
     public ArrayList<File> listAll() {
-        //Should be like this lib/dep1.jar, lib/dep2.jar, lib/dep3.jar
         ArrayList<File> depFiles = new ArrayList<>();
         if (config.get("deps") != null) {
             String[] currentDepList = config.get("deps").split(",");
@@ -188,7 +192,7 @@ public class Dependency {
     }
 
     /**
-     * Checks if a dependency file exists locally.
+     * Checks if a dependency file exists locally in the dependency directory.
      * 
      * @param mavenString The Maven coordinate string to check
      * @return true if the dependency exists locally, false otherwise
@@ -206,7 +210,8 @@ public class Dependency {
     }
 
     /**
-     * Checks if a dependency exists in the remote repository.
+     * Checks if a dependency exists in the remote Maven repository.
+     * Performs an HTTP request to verify the dependency's availability.
      * 
      * @param mavenString The Maven coordinate string to check
      * @return true if the dependency exists in the repository, false otherwise
@@ -219,7 +224,8 @@ public class Dependency {
         String artifactID = parts[1];
         String version = parts[2];
         String jarFileName = artifactID + "-" + version + ".jar";
-        //Test if http request is successful
+        
+        // Test if HTTP request is successful
         try {
             URL url = new URI(
                 BASE_URL +

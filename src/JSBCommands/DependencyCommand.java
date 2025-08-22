@@ -32,12 +32,14 @@ import java.util.ArrayList;
 public class DependencyCommand implements IHandler {
 
     /** Configuration manager instance */
-    Config config;
+    private Config config;
+    
     /** Dependency manager instance */
-    Dependency dependency;
+    private Dependency dependency;
 
     /**
      * Constructs a new DependencyCommand handler.
+     * 
      * @param config The configuration manager instance
      * @param dependency The dependency manager instance
      */
@@ -58,7 +60,10 @@ public class DependencyCommand implements IHandler {
      */
     @Override
     public void handleCommand(Command command) {
-        if (!this.config.ready()) this.config.initConfig();
+        if (!this.config.ready()) {
+            this.config.initConfig();
+        }
+        
         String action = command.get(0);
         String dep = command.get(1);
         boolean needsDep = action.equals("add") || action.equals("remove");
@@ -93,6 +98,7 @@ public class DependencyCommand implements IHandler {
                     }
                 }
                 break;
+                
             case "remove":
                 if (dependency.doesExist(dep)) {
                     dependency.remove(dep);
@@ -105,6 +111,7 @@ public class DependencyCommand implements IHandler {
                     );
                 }
                 break;
+                
             case "list":
                 ArrayList<File> depsList = dependency.listAll();
                 if (depsList.isEmpty()) {
@@ -116,6 +123,7 @@ public class DependencyCommand implements IHandler {
                     }
                 }
                 break;
+                
             default:
                 throw new IllegalArgumentException(
                     "Invalid action. Please check the help information."

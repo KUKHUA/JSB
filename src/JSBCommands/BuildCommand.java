@@ -72,7 +72,9 @@ public class BuildCommand implements IHandler {
      */
     @Override
     public void handleCommand(Command command) throws Exception {
-        if (!this.config.ready()) this.config.initConfig();
+        if (!this.config.ready()) {
+            this.config.initConfig();
+        }
 
         if (config.get("deps") != null) {
             String[] deps = config.get("deps").split(",");
@@ -99,7 +101,6 @@ public class BuildCommand implements IHandler {
             }
         }
 
-
         List<String> javaFiles = Files.walk(Paths.get(config.get("code.path")))
             .filter(p -> p.toString().endsWith(".java"))
             .map(Path::toString)
@@ -112,15 +113,14 @@ public class BuildCommand implements IHandler {
         }
 
         ArrayList<String> shellCommand = new ArrayList<>();
-
         shellCommand.add(config.get("system.shell")); // sh or cmd
         shellCommand.add(config.get("system.shell.parm")); // -c or /c
 
         ArrayList<String> buildCommand = new ArrayList<>();
-        buildCommand.add(config.get("build.cmd")); //javac
-        buildCommand.add("-d"); // speficy where to put complied classes
+        buildCommand.add(config.get("build.cmd")); // javac
+        buildCommand.add("-d"); // specify where to put compiled classes
         buildCommand.add(config.get("build.builds")); // ./classes
-        buildCommand.add("-cp"); // speficy classpath
+        buildCommand.add("-cp"); // specify classpath
 
         buildCommand.add(
             // ./lib/*:./classes/*:*
@@ -143,8 +143,11 @@ public class BuildCommand implements IHandler {
 
         System.out.println("Running the command: " + shellCommand);
         boolean exitedGood = Runner.runCommand(shellCommand);
-        if (exitedGood) System.out.println("Building exited successfully!");
-        else System.out.println("Building probably failed : (");
+        if (exitedGood) {
+            System.out.println("Building exited successfully!");
+        } else {
+            System.out.println("Building probably failed :(");
+        }
     }
 
     /**
